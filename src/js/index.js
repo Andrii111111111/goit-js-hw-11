@@ -40,11 +40,9 @@ async function getFoto(currentFoto) {
     const data = response.data;
     container.insertAdjacentHTML('beforeend', createMarkup(data));
     button.classList.remove('is-hidden');
-    Notiflix.Notify.info(`"Hooray! We found ${data.totalHits} images."`);
-    if (page === data.totalHits / 40) {
-      Notiflix.Notify.info(
-        "We're sorry, but you've reached the end of search results."
-      );
+
+    if (page === 1) {
+      Notiflix.Notify.info(`"Hooray! We found ${data.totalHits} images."`);
     }
   } catch (error) {
     button.classList.add('is-hidden');
