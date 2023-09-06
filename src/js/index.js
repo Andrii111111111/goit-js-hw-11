@@ -42,7 +42,7 @@ async function getFoto(currentFoto) {
     button.classList.remove('is-hidden');
 
     if (page === 1) {
-      Notiflix.Notify.info(`"Hooray! We found ${data.totalHits} images."`);
+      Notiflix.Notify.info(`"   Hooray! We found ${data.totalHits} images."`);
     }
   } catch (error) {
     button.classList.add('is-hidden');
