@@ -41,14 +41,31 @@ async function getFoto(currentFoto) {
     container.insertAdjacentHTML('beforeend', createMarkup(data));
     button.classList.remove('is-hidden');
 
-    if (page === 1) {
-      Notiflix.Notify.info(`"   Hooray! We found ${data.totalHits} images."`);
+    if ((page === 1) & (data.totalHits > 0)) {
+      Notiflix.Notify.info(`"Hooray! We found ${data.totalHits} images."`);
+    }
+    if ((page === 1) & (data.totalHits === 0)) {
+      button.classList.add('is-hidden');
+      Notiflix.Notify.info(
+        `Sorry, there are no images matching your search ${currentFoto}. Please try again.`
+      );
+    }
+    console.log(data.totalHits / 40);
+    if (page > data.totalHits / 40) {
+      button.classList.add('is-hidden');
+      Notiflix.Notify.warning(
+        "We're sorry, but you've reached the end of search results."
+      );
     }
   } catch (error) {
     button.classList.add('is-hidden');
-    Notiflix.Notify.warning(
-      '"Sorry, there are no images matching your search query. Please try again."'
-    );
+
+    if (error.code === 'ERR_NETWORK') {
+      Notiflix.Notify.warning('Please check the connection or check request');
+    }
+    if (error.code === 'ERR_BAD_REQUEST') {
+      Notiflix.Notify.warning('Please Login');
+    }
   }
 }
 
