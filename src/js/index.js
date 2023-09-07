@@ -41,6 +41,13 @@ async function getFoto(currentFoto) {
     container.insertAdjacentHTML('beforeend', createMarkup(data));
     button.classList.remove('is-hidden');
 
+    if (currentFoto === '') {
+      page = 2;
+      button.classList.add('is-hidden');
+      container.innerHTML = '';
+      Notiflix.Notify.info(`Please enter a request`);
+    }
+
     if ((page === 1) & (data.totalHits > 0)) {
       Notiflix.Notify.info(`"Hooray! We found ${data.totalHits} images."`);
     }
