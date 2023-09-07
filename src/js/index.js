@@ -50,8 +50,8 @@ async function getFoto(currentFoto) {
         `Sorry, there are no images matching your search ${currentFoto}. Please try again.`
       );
     }
-    console.log(data.totalHits / 40);
-    if (page > data.totalHits / 40) {
+
+    if ((page > data.totalHits / 40) & (page != 1)) {
       button.classList.add('is-hidden');
       Notiflix.Notify.warning(
         "We're sorry, but you've reached the end of search results."
