@@ -7,22 +7,23 @@ const container = document.querySelector('.gallery');
 const form = document.querySelector('.search-form');
 const input = document.querySelector('[name="searchQuery"]');
 const button = document.querySelector('.load-more');
-let page = 1;
-
-button.addEventListener('click', loadFoto);
-
-function loadFoto(e) {
-  page += 1;
-  getFoto();
-}
+let page;
+const currentFoto = input.value.trim();
 
 form.addEventListener('submit', searchFoto);
 function searchFoto(e) {
-  container.innerHTML = ' ';
+  container.innerHTML = '';
   e.preventDefault();
   page = 1;
   const currentFoto = input.value.trim();
+  e.target.reset();
   getFoto(currentFoto);
+
+  button.addEventListener('click', loadFoto);
+  function loadFoto(e) {
+    page += 1;
+    getFoto(currentFoto);
+  }
 }
 
 async function getFoto(currentFoto) {
@@ -38,21 +39,19 @@ async function getFoto(currentFoto) {
         page: page,
       },
     });
+
+    console.log(response);
     const data = response.data;
     container.insertAdjacentHTML('beforeend', createMarkup(data));
-    button.classList.remove('is-hidden');
-    console.log(currentFoto[0]);
-    if (currentFoto === '') {
-      page = 2;
-      button.classList.add('is-hidden');
-      container.innerHTML = '';
-      Notiflix.Notify.info(`Please enter a request`);
-    }
+    // let currentFotoLenght = document.querySelectorAll('.photo-card').length;
     if (data.totalHits < 40) {
       button.classList.add('is-hidden');
     }
-    if ((page === 1) & (data.totalHits > 0)) {
-      Notiflix.Notify.info(`"Hooray! We found ${data.totalHits} images."`);
+    if (data.totalHits >= 41) {
+      button.classList.remove('is-hidden');
+    }
+    if ((page === 1) & (currentFoto != '') & (data.totalHits > 0)) {
+      Notiflix.Notify.success(`"Hooray! We found ${data.totalHits} images."`);
     }
     if ((page === 1) & (data.totalHits === 0)) {
       button.classList.add('is-hidden');
@@ -61,6 +60,11 @@ async function getFoto(currentFoto) {
       );
     }
 
+    if ((currentFoto === '') & (page === 1)) {
+      button.classList.add('is-hidden');
+      container.innerHTML = '';
+      Notiflix.Notify.info(`Please enter a request`);
+    }
     if ((page > data.totalHits / 40) & (page != 1)) {
       button.classList.add('is-hidden');
       Notiflix.Notify.warning(
