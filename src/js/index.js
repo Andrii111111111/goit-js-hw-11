@@ -20,7 +20,8 @@ form.addEventListener('submit', searchFoto);
 function searchFoto(e) {
   container.innerHTML = ' ';
   e.preventDefault();
-  const currentFoto = input.value;
+  page = 1;
+  const currentFoto = input.value.trim();
   getFoto(currentFoto);
 }
 
@@ -40,14 +41,16 @@ async function getFoto(currentFoto) {
     const data = response.data;
     container.insertAdjacentHTML('beforeend', createMarkup(data));
     button.classList.remove('is-hidden');
-
+    console.log(currentFoto[0]);
     if (currentFoto === '') {
       page = 2;
       button.classList.add('is-hidden');
       container.innerHTML = '';
       Notiflix.Notify.info(`Please enter a request`);
     }
-
+    if (data.totalHits < 40) {
+      button.classList.add('is-hidden');
+    }
     if ((page === 1) & (data.totalHits > 0)) {
       Notiflix.Notify.info(`"Hooray! We found ${data.totalHits} images."`);
     }
