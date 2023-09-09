@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Notiflix from 'notiflix';
+import { createMarkup } from './createMarkup';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '39240631-8a58999efa7d66452fb176341';
@@ -8,7 +9,6 @@ const form = document.querySelector('.search-form');
 const input = document.querySelector('[name="searchQuery"]');
 const button = document.querySelector('.load-more');
 let page;
-const currentFoto = input.value.trim();
 
 form.addEventListener('submit', searchFoto);
 function searchFoto(e) {
@@ -79,35 +79,6 @@ async function getFoto(currentFoto) {
       Notiflix.Notify.warning('Please Login');
     }
   }
-}
-
-function createMarkup(data) {
-  const hits = data.hits;
-  return hits
-    .map(
-      item => `<div class="photo-card">
-  <img src="${item.webformatURL}" width = '300px' height="300px" alt="${item.tags}" loading="lazy" />
-  <div class="info">
-  <div class="info-parts">
-    <p class="info-item">
-      <b>Likes</b>
-    </p><p class="values">${item.likes}</p></div>
-    <div class="info-parts">
-    <p class="info-item">
-      <b>Views</b>
-    </p> <p class="values">${item.views}</p></div>
-    <div class="info-parts">
-    <p class="info-item">
-      <b>Comments</b>
-    </p><p class="values">${item.comments}</p></div>
-    <div class="info-parts">
-    <p class="info-item">
-      <b>Downloads</b>
-    </p><p class="values">${item.downloads}</p></div>
-  </div>
-</div> `
-    )
-    .join('');
 }
 
 // styles
