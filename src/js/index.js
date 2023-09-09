@@ -87,5 +87,5 @@ container.style.display = 'flex';
 container.style.gap = '10px';
 container.style.flexWrap = 'wrap';
 container.style.justifyContent = 'center';
-form.style.textAlign = 'center';
-form.style.margin = '30px';
+// form.style.textAlign = 'center';
+// form.style.margin = '30px';
